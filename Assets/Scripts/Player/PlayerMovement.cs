@@ -74,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool("isIdle", true);
     }
 
-    //Simple function so the player cant go diagonal 
+    //Simple function so the player's diagonal speed is the same
     private PlayerState CalculateDirection(Vector2 input)
     {
         Vector2 direction = new Vector2();
@@ -85,7 +85,9 @@ public class PlayerMovement : MonoBehaviour
             //Rounded because if you press up and right (for example) at the same time the resulting vector is (0.71, 0.71)
             direction.x = Mathf.RoundToInt(input.normalized.x);
             directionType = direction.x < 0 ? PlayerDirection.Left : PlayerDirection.Right;
-        } else if (input.y != 0)
+        } 
+        
+        if (input.y != 0)
         {
             direction.y = Mathf.RoundToInt(input.normalized.y);
             directionType = direction.y < 0 ? PlayerDirection.Down : PlayerDirection.Up;
