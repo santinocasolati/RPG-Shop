@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 1f;
     public float camSpeed = 2f;
 
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator[] animators;
 
     private PlayerInput playerInput;
     private InputAction movementAction;
@@ -56,24 +56,6 @@ public class PlayerMovement : MonoBehaviour
         };
     }
 
-    private void OnEnable()
-    {
-        movementAction.performed += ctx => movement = ctx.ReadValue<Vector2>();
-        movementAction.canceled += CancelAction;
-    }
-
-    private void OnDisable()
-    {
-        movementAction.performed -= ctx => movement = ctx.ReadValue<Vector2>();
-        movementAction.canceled += CancelAction;
-    }
-
-    private void CancelAction(InputAction.CallbackContext ctx)
-    {
-        movement = ctx.ReadValue<Vector2>();
-        animator.SetBool("isIdle", true);
-    }
-
     //Simple function so the player's diagonal speed is the same
     private PlayerState CalculateDirection(Vector2 input)
     {
@@ -85,8 +67,8 @@ public class PlayerMovement : MonoBehaviour
             //Rounded because if you press up and right (for example) at the same time the resulting vector is (0.71, 0.71)
             direction.x = Mathf.RoundToInt(input.normalized.x);
             directionType = direction.x < 0 ? PlayerDirection.Left : PlayerDirection.Right;
-        } 
-        
+        }
+
         if (input.y != 0)
         {
             direction.y = Mathf.RoundToInt(input.normalized.y);
@@ -102,6 +84,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        movement = movementAction.ReadValue<Vector2>();
+
         PlayerState state = CalculateDirection(movement);
         MovePlayer(state.direction);
         ChangeAnim(state.directionType);
@@ -113,56 +97,66 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(direction * moveSpeed * Time.deltaTime);
     }
 
-    private void EnableTrigger(int trigger, PlayerDirection directionType)
+    private void EnableTrigger(int trigger, PlayerDirection directionType, Animator animator)
     {
         triggers.ForEach(t =>
         {
-            if (t == trigger)
+            if (animator.runtimeAnimatorController != null)
             {
-                if (directionType != playerState)
+                if (t == trigger)
                 {
-                    animator.SetTrigger(t);
+                    if (directionType != playerState)
+                    {
+                        animator.SetTrigger(t);
+                    }
                 }
-            } else
-            {
-                animator.ResetTrigger(t);
+                else
+                {
+                    animator.ResetTrigger(t);
+                }
             }
         });
     }
 
     private void ChangeAnim(PlayerDirection directionType)
     {
-        if (directionType != playerState)
+        foreach (Animator anim in animators)
         {
-            animator.Play("idle");
-        }
+            if (anim.runtimeAnimatorController != null)
+            {
+                if (directionType != playerState)
+                {
+                    anim.Play("idle");
+                }
 
-        switch (directionType)
-        {
-            case PlayerDirection.Left:
-                EnableTrigger(triggerW, directionType);
-                animator.SetBool("isIdle", false);
-                break;
+                switch (directionType)
+                {
+                    case PlayerDirection.Left:
+                        EnableTrigger(triggerW, directionType, anim);
+                        anim.SetBool("isIdle", false);
+                        break;
 
-            case PlayerDirection.Right:
-                EnableTrigger(triggerE, directionType);
-                animator.SetBool("isIdle", false);
-                break;
+                    case PlayerDirection.Right:
+                        EnableTrigger(triggerE, directionType, anim);
+                        anim.SetBool("isIdle", false);
+                        break;
 
-            case PlayerDirection.Up:
-                EnableTrigger(triggerN, directionType);
-                animator.SetBool("isIdle", false);
-                break;
+                    case PlayerDirection.Up:
+                        EnableTrigger(triggerN, directionType, anim);
+                        anim.SetBool("isIdle", false);
+                        break;
 
-            case PlayerDirection.Down:
-                EnableTrigger(triggerS, directionType);
-                animator.SetBool("isIdle", false);
-                break;
+                    case PlayerDirection.Down:
+                        EnableTrigger(triggerS, directionType, anim);
+                        anim.SetBool("isIdle", false);
+                        break;
 
-            default:
-                EnableTrigger(-1, directionType);
-                animator.SetBool("isIdle", true);
-                break;
+                    default:
+                        EnableTrigger(-1, directionType, anim);
+                        anim.SetBool("isIdle", true);
+                        break;
+                }
+            }
         }
 
         playerState = directionType;
