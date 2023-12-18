@@ -40,6 +40,8 @@ public class PlayerMovement : MonoBehaviour
     private int triggerE;
     private int triggerW;
 
+    private AudioSource audioSource;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -57,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
             triggerE,
             triggerW
         };
+
+        audioSource = GetComponent<AudioSource>();
 
         Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
         canMove = true;
@@ -110,7 +114,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer(Vector2 direction)
     {
-        transform.Translate(direction * moveSpeed * Time.deltaTime);
+        if (direction != Vector2.zero)
+        {
+            transform.Translate(direction * moveSpeed * Time.deltaTime);
+            audioSource.enabled = true;
+        } else
+        {
+            audioSource.enabled = false;
+        }
     }
 
     private void EnableTrigger(int trigger, PlayerDirection directionType, Animator animator)

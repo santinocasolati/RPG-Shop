@@ -8,6 +8,8 @@ public class InventoryToggle : MonoBehaviour
 
     [SerializeField] private GameObject[] hideIcons;
     [SerializeField] private GameObject inventoryPage;
+    [SerializeField] private AudioClip openAudio;
+    [SerializeField] private AudioClip closeAudio;
 
     public void ToggleInventory(bool state)
     {
@@ -18,6 +20,15 @@ public class InventoryToggle : MonoBehaviour
 
         inventoryPage.SetActive(state);
         PlayerMovement.instance.canMove = !state;
+
+        AudioClip audio = closeAudio;
+
+        if (state)
+        {
+            audio = openAudio;
+        }
+
+        AudioManager.instance.PlaySound(audio);
 
         float targetZoom = state ? 2.5f : 5f;
 
