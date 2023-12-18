@@ -26,4 +26,9 @@ public class GameManager : MonoBehaviour
         coins -= removedCoins;
         coinsUpdated.Invoke(coins);
     }
+
+    public bool HasCoins(int checkCoins)
+    {
+        return coins >= checkCoins;
+    }
 }
