@@ -20,8 +20,11 @@ public class PlayerState
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement instance;
+
     public float moveSpeed = 1f;
     public float camSpeed = 2f;
+    public bool canMove {  get; set; }
 
     [SerializeField] private Animator[] animators;
 
@@ -54,6 +57,11 @@ public class PlayerMovement : MonoBehaviour
             triggerE,
             triggerW
         };
+
+        Camera.main.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+        canMove = true;
+
+        instance = this;
     }
 
     //Simple function so the player's diagonal speed is the same
@@ -84,10 +92,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        movement = movementAction.ReadValue<Vector2>();
+        movement = Vector2.zero;
 
-        PlayerState state = CalculateDirection(movement);
-        MovePlayer(state.direction);
+        PlayerState state = new PlayerState();
+        state.directionType = PlayerDirection.Idle;
+
+        if (canMove)
+        {
+            movement = movementAction.ReadValue<Vector2>();
+            state = CalculateDirection(movement);
+            MovePlayer(state.direction);
+        }
+
         ChangeAnim(state.directionType);
         MoveCamera();
     }
