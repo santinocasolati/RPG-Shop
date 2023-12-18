@@ -50,3 +50,6 @@ TagManager:
   - name: UI
     uniqueID: 1666155451
     locked: 0
+  - name: Collectables
+    uniqueID: 2198251515
+    locked: 0

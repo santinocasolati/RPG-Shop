@@ -6,12 +6,16 @@ public class InventoryToggle : MonoBehaviour
 {
     public float zoomDuration = 0.5f;
 
-    [SerializeField] private GameObject inventoryIcon;
+    [SerializeField] private GameObject[] hideIcons;
     [SerializeField] private GameObject inventoryPage;
 
     public void ToggleInventory(bool state)
     {
-        inventoryIcon.SetActive(!state);
+        foreach (GameObject icon in hideIcons)
+        {
+            icon.SetActive(!state);
+        }
+
         inventoryPage.SetActive(state);
         PlayerMovement.instance.canMove = !state;
 
