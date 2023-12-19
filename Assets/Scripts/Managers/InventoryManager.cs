@@ -2,21 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Rendering.CameraUI;
 
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
 
-    public OutfitType[] outfits;
+    public OutfitSection[] outfits;
 
     private void Awake()
     {
         instance = this;
     }
 
-    public void UnlockOutfit(string type, string outfitName)
+    public void UnlockOutfit(OutfitType type, string outfitName)
     {
-        OutfitType ot = outfits.FirstOrDefault(t => t.name == type);
+        OutfitSection ot = outfits.FirstOrDefault(t => t.type == type);
 
         if (ot != null)
         {
@@ -29,9 +30,9 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void LockOutfit(string type, string outfitName)
+    public void LockOutfit(OutfitType type, string outfitName)
     {
-        OutfitType ot = outfits.FirstOrDefault(t => t.name == type);
+        OutfitSection ot = outfits.FirstOrDefault(t => t.type == type);
 
         if (ot != null)
         {
@@ -41,6 +42,28 @@ public class InventoryManager : MonoBehaviour
             {
                 of.isLocked = true;
             }
+
+            CheckIfUsed(ot, of.idle);
+        }
+    }
+
+    private void CheckIfUsed(OutfitSection section, Sprite sprite)
+    {
+        OutfitSwitcher outfitSwitcher = PlayerMovement.instance.gameObject.GetComponent<OutfitSwitcher>();
+
+        switch (section.type)
+        {
+            case OutfitType.Clothes:
+                if (outfitSwitcher.currentOutfit.clothes == sprite) outfitSwitcher.RestartType(section);
+                break;
+            case OutfitType.Hair:
+                if (outfitSwitcher.currentOutfit.hair == sprite) outfitSwitcher.RestartType(section);
+                break;
+            case OutfitType.Hat:
+                if (outfitSwitcher.currentOutfit.hat == sprite) outfitSwitcher.RestartType(section);
+                break;
+            default:
+                break;
         }
     }
 }
@@ -56,9 +79,17 @@ public class Outfit
 }
 
 [System.Serializable]
-public class OutfitType
+public class OutfitSection
 {
-    public string name;
+    public OutfitType type;
     public Animator animator;
     public Outfit[] outfits;
+}
+
+[System.Serializable]
+public enum OutfitType
+{
+    Clothes,
+    Hair,
+    Hat
 }

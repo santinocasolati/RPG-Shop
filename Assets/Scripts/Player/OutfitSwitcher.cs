@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class OutfitSwitcher : MonoBehaviour
 {
-    public void ChangeOutfit(string type, string name)
+    public CurrentOutfit currentOutfit;
+
+    private void Awake()
     {
-        OutfitType ot = InventoryManager.instance.outfits.FirstOrDefault(t => t.name == type);
+        currentOutfit = new CurrentOutfit();
+    }
+
+    public void ChangeOutfit(OutfitType type, string name)
+    {
+        OutfitSection ot = InventoryManager.instance.outfits.FirstOrDefault(t => t.type == type);
 
         if (ot != null)
         {
@@ -18,21 +25,49 @@ public class OutfitSwitcher : MonoBehaviour
                 RestartType(ot);
                 ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = of.idle;
                 ot.animator.runtimeAnimatorController = of.controller;
+                AssignCurrentOutfitProperties(ot.type, of.idle);
             }
+        }
+    }
+
+    private void AssignCurrentOutfitProperties(OutfitType type, Sprite outfit)
+    {
+        switch (type)
+        {
+            case OutfitType.Clothes:
+                currentOutfit.clothes = outfit;
+                break;
+            case OutfitType.Hair:
+                currentOutfit.hair = outfit;
+                break;
+            case OutfitType.Hat:
+                currentOutfit.hat = outfit;
+                break;
+            default:
+                break;
         }
     }
 
     public void RestartOutfit()
     {
-        foreach (OutfitType ot in InventoryManager.instance.outfits)
+        foreach (OutfitSection ot in InventoryManager.instance.outfits)
         {
             RestartType(ot);
         }
     }
 
-    private void RestartType(OutfitType ot)
+    public void RestartType(OutfitSection ot)
     {
-        ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = null;
         ot.animator.runtimeAnimatorController = null;
+        ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        AssignCurrentOutfitProperties(ot.type, null);
     }
+}
+
+[System.Serializable]
+public class CurrentOutfit
+{
+    public Sprite clothes;
+    public Sprite hair;
+    public Sprite hat;
 }

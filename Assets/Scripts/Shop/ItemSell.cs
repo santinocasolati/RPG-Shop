@@ -6,7 +6,7 @@ public class ItemSell : MonoBehaviour
 {
     [SerializeField] private AudioClip canSell;
 
-    public string type;
+    public OutfitType type;
     public string outfitName;
     public int price;
 

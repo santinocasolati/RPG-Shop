@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outfits:
-  - name: Clothes
+  - type: 0
     animator: {fileID: 2917512576820897599}
     outfits:
     - outfitName: Clothes1
@@ -1583,7 +1583,7 @@ MonoBehaviour:
       idle: {fileID: 21300000, guid: 71d346947e26f2049acf491e123e543b, type: 2}
       isLocked: 1
       price: 2
-  - name: Hair
+  - type: 1
     animator: {fileID: 2917512576820897598}
     outfits:
     - outfitName: Hair1
@@ -1591,7 +1591,7 @@ MonoBehaviour:
       idle: {fileID: 21300000, guid: 6e6bb2a69b2f7424d957a209b4ca1aef, type: 2}
       isLocked: 0
       price: 1
-  - name: Hat
+  - type: 2
     animator: {fileID: 2917512576820897597}
     outfits:
     - outfitName: Hat1

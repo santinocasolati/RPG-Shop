@@ -29,7 +29,7 @@ public class PopulateShop : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (OutfitType ot in InventoryManager.instance.outfits)
+        foreach (OutfitSection ot in InventoryManager.instance.outfits)
         {
             foreach (Outfit of in ot.outfits)
             {
@@ -51,7 +51,7 @@ public class PopulateShop : MonoBehaviour
 
                     ItemBuy itemBuy = item.gameObject.GetComponent<ItemBuy>();
                     itemBuy.price = of.price;
-                    itemBuy.type = ot.name;
+                    itemBuy.type = ot.type;
                     itemBuy.outfitName = of.outfitName;
                 }
             }
@@ -65,7 +65,7 @@ public class PopulateShop : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (OutfitType ot in InventoryManager.instance.outfits)
+        foreach (OutfitSection ot in InventoryManager.instance.outfits)
         {
             foreach (Outfit of in ot.outfits)
             {
@@ -87,7 +87,7 @@ public class PopulateShop : MonoBehaviour
 
                     ItemSell itemSell = item.gameObject.GetComponent<ItemSell>();
                     itemSell.price = of.price;
-                    itemSell.type = ot.name;
+                    itemSell.type = ot.type;
                     itemSell.outfitName = of.outfitName;
                 }
             }

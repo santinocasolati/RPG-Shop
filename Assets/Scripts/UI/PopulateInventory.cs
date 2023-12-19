@@ -13,7 +13,7 @@ public class PopulateInventory : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (OutfitType ot in InventoryManager.instance.outfits)
+        foreach (OutfitSection ot in InventoryManager.instance.outfits)
         {
             foreach (Outfit of in ot.outfits)
             {
@@ -22,7 +22,7 @@ public class PopulateInventory : MonoBehaviour
                     GameObject item = Instantiate(itemPrefab);
                     item.transform.SetParent(transform, false);
 
-                    item.GetComponent<SetInventoryItem>().ChangeItem(of.idle, ot.name, of.outfitName);
+                    item.GetComponent<SetInventoryItem>().ChangeItem(of.idle, ot.type, of.outfitName);
                 }
             }
         }

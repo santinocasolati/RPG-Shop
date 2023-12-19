@@ -8,7 +8,7 @@ public class ItemBuy : MonoBehaviour
     [SerializeField] private AudioClip cantBuy;
 
     public int price;
-    public string type;
+    public OutfitType type;
     public string outfitName;
 
     public void OnClick()
