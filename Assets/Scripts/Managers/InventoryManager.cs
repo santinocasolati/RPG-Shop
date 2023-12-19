@@ -28,6 +28,21 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    public void LockOutfit(string type, string outfitName)
+    {
+        OutfitType ot = outfits.FirstOrDefault(t => t.name == type);
+
+        if (ot != null)
+        {
+            Outfit of = ot.outfits.FirstOrDefault(o => o.outfitName == outfitName);
+
+            if (of != null)
+            {
+                of.isLocked = true;
+            }
+        }
+    }
 }
 
 [System.Serializable]
@@ -37,6 +52,7 @@ public class Outfit
     public RuntimeAnimatorController controller;
     public Sprite idle;
     public bool isLocked;
+    public int price;
 }
 
 [System.Serializable]

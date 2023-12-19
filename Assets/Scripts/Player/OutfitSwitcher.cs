@@ -15,6 +15,7 @@ public class OutfitSwitcher : MonoBehaviour
 
             if (of != null && !of.isLocked)
             {
+                RestartType(ot);
                 ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = of.idle;
                 ot.animator.runtimeAnimatorController = of.controller;
             }
@@ -25,8 +26,13 @@ public class OutfitSwitcher : MonoBehaviour
     {
         foreach (OutfitType ot in InventoryManager.instance.outfits)
         {
-            ot.animator.runtimeAnimatorController = null;
-            ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+            RestartType(ot);
         }
+    }
+
+    private void RestartType(OutfitType ot)
+    {
+        ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        ot.animator.runtimeAnimatorController = null;
     }
 }

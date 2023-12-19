@@ -44,12 +44,12 @@ TagManager:
   - name: Terrain
     uniqueID: 230486253
     locked: 0
+  - name: Collectables
+    uniqueID: 2198251515
+    locked: 0
   - name: Player
     uniqueID: 1788719471
     locked: 0
   - name: UI
     uniqueID: 1666155451
-    locked: 0
-  - name: Collectables
-    uniqueID: 2198251515
     locked: 0

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ItemBuy : MonoBehaviour
 {
-    [SerializeField] private string type;
-    [SerializeField] private string outfitName;
-    [SerializeField] private int price;
     [SerializeField] private AudioClip canBuy;
     [SerializeField] private AudioClip cantBuy;
+
+    public int price;
+    public string type;
+    public string outfitName;
 
     public void OnClick()
     {
