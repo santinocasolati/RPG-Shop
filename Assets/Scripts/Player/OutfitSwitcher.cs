@@ -5,42 +5,28 @@ using UnityEngine;
 
 public class OutfitSwitcher : MonoBehaviour
 {
-    public OutfitType[] outfitTypes;
-
-    public void A()
-    {
-        ChangeOutfit("Clothes", "Cloth1");
-    }
-
     public void ChangeOutfit(string type, string name)
     {
-        OutfitType ot = outfitTypes.FirstOrDefault(t => t.name == type);
+        OutfitType ot = InventoryManager.instance.outfits.FirstOrDefault(t => t.name == type);
 
         if (ot != null)
         {
             Outfit of = ot.outfits.FirstOrDefault(o => o.outfitName == name);
 
-            if (of != null)
+            if (of != null && !of.isLocked)
             {
                 ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = of.idle;
                 ot.animator.runtimeAnimatorController = of.controller;
             }
         }
     }
-}
 
-[System.Serializable]
-public class Outfit
-{
-    public string outfitName;
-    public RuntimeAnimatorController controller;
-    public Sprite idle;
-}
-
-[System.Serializable]
-public class OutfitType
-{
-    public string name;
-    public Animator animator;
-    public Outfit[] outfits;
+    public void RestartOutfit()
+    {
+        foreach (OutfitType ot in InventoryManager.instance.outfits)
+        {
+            ot.animator.runtimeAnimatorController = null;
+            ot.animator.gameObject.GetComponent<SpriteRenderer>().sprite = null;
+        }
+    }
 }

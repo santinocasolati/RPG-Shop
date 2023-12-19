@@ -8,9 +8,18 @@ public class SetInventoryItem : MonoBehaviour
     [SerializeField] private Image image;
     [SerializeField] private Image border;
 
-    public void ChangeItem(Sprite sprite)
+    private string type, outfitName;
+
+    public void ChangeItem(Sprite sprite, string type, string outfitName)
     {
         image.sprite = sprite;
         image.gameObject.SetActive(true);
+        this.type = type;
+        this.outfitName = outfitName;
+    }
+
+    public void Click()
+    {
+        PlayerMovement.instance.gameObject.GetComponent<OutfitSwitcher>().ChangeOutfit(type, outfitName);
     }
 }
